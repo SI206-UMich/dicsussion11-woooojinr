@@ -64,11 +64,11 @@ def add_pets_from_json(filename, cur, conn):
 
     # THE REST IS UP TO YOU
     for pet in json_data:
-        name = pet('name')
-        age = pet('age')
-        species = pet('species')
-        cuteness = pet('cuteness')
-        aggressiveness = pet('aggressiveness')
+        name = pet['name']
+        age = pet['age']
+        species = pet['species']
+        cuteness = pet['cuteness']
+        aggressiveness = pet['aggressiveness']
         cur.execute('SELECT id FROM Species WHERE title = ?', (species,))
         species_id = cur.fetchone()[0]
 
@@ -80,7 +80,10 @@ def add_pets_from_json(filename, cur, conn):
 # TASK 3
 # CODE TO OUTPUT NON-AGGRESSIVE PETS
 def non_aggressive_pets(aggressiveness, cur, conn):
-    pass
+    cur.execute('SELECT name FROM Patient WHERE <= ?', (aggressiveness,))
+    non_aggressive_pet_list = cur.fetchall() # we use fetch all to get all rows of the select result
+    non_aggressive_pet_list = [item[0] for item in non_aggressive_pet_list]
+    return non_aggressive_pet_list
 
 
 
@@ -92,8 +95,8 @@ def main():
     create_patients_table(cur, conn)
     add_fluffle(cur, conn)
     add_pets_from_json('pets.json', cur, conn)
-    # ls = (non_aggressive_pets(10, cur, conn))
-    # print(ls)
+    ls = (non_aggressive_pets(10, cur, conn))
+    print(ls)
     
     
 if __name__ == "__main__":
